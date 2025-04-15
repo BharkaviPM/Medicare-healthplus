@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Woxsen University - Appointment Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #111;
+            padding: 20px;
+            border: 1px solid #f00;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #f00;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            color: #f00;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c00;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px;
+        }
+        .error {
+            color: #f00;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/en/8/8e/Woxsen_University_logo.png" alt="Woxsen University Logo">
+    </div>
+    <h1>Appointment Booking - Woxsen University</h1>
+    <form method="post" onsubmit="return validateEmail()">
+        {% csrf_token %}
+        
+        <label for="email">Woxsen Email:</label>
+        <input type="email" id="email" name="email" required placeholder="example@woxsen.edu.in">
+
+        <p class="error" id="emailError">Only @woxsen.edu.in email addresses are allowed.</p>
+
+        <label for="date">Date:</label>
+        <input type="date" name="date" required>
+
+        <label for="specialization">Specialization:</label>
+        <select id="specialization" onchange="filterDoctors()" required>
+            <option value="">Select Specialization</option>
+            <option value="General Physician">General Physician</option>
+            <option value="Gynecologist">Gynecologist</option>
+            <option value="Orthopedist">Orthopedist</option>
+            <option value="Cardiologist">Cardiologist</option>
+            <option value="Dermatologist">Dermatologist</option>
+        </select>
+
+        <label for="doctor">Doctor:</label>
+        <select name="doctor" id="doctorSelect" required>
+            <option value="">Select Doctor</option>
+            <option value="1" data-specialization="General Physician">Dr. Rajesh Kumar - General Physician</option>
+            <option value="2" data-specialization="Gynecologist">Dr. Anjali Sharma - Gynecologist</option>
+            <option value="3" data-specialization="Orthopedist">Dr. Ravi Verma - Orthopedist</option>
+            <option value="4" data-specialization="Cardiologist">Dr. Priya Menon - Cardiologist</option>
+            <option value="5" data-specialization="Dermatologist">Dr. Suresh Iyer - Dermatologist</option>
+        </select>
+
+        <label for="time">Available Time Slots:</label>
+        <select name="time" id="timeSlotSelect" required>
+            <option value="09:00">09:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="16:00">04:00 PM</option>
+        </select>
+
+        <button type="submit">Book Appointment</button>
+    </form>
+</div>
+
+<script>
+    function validateEmail() {
+        const emailField = document.getElementById('email');
+        const errorElement = document.getElementById('emailError');
+        const email = emailField.value;
+
+        if (!email.endsWith('@woxsen.edu.in')) {
+            errorElement.style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            errorElement.style.display = 'none';
+            return true;
+        }
+    }
+
+    function filterDoctors() {
+        const specialization = document.getElementById('specialization').value;
+        const doctorSelect = document.getElementById('doctorSelect');
+        const options = doctorSelect.querySelectorAll('option');
+
+        options.forEach(option => {
+            if (option.value === "") {
+                option.style.display = "block"; // Always show "Select Doctor"
+            } else if (option.getAttribute('data-specialization') === specialization || specialization === "") {
+                option.style.display = "block";
+            } else {
+                option.style.display = "none";
+            }
+        });
+
+        doctorSelect.value = ""; // Reset selection after filtering
+    }
+</script>
+
+</body>
+</html>

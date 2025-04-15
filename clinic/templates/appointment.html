@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+</head>
+<body>
+    <h1>Book an Appointment</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <label for="doctor">Select Doctor:</label>
+        <select name="doctor" id="doctor">
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="date">Select Date:</label>
+        <input type="date" name="date" id="date" required>
+        <br><br>
+        <button type="submit">Book Appointment</button>
+    </form>
+</body>
+</html>

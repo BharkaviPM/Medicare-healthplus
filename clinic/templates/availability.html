@@ -1,0 +1,6 @@
+<h3>Available Doctors Today</h3>
+<ul>
+    {% for doc in doctors %}
+    <li>{{ doc.name }} ({{ doc.specialty }}) - Available at: {{ doc.available_time }}</li>
+    {% endfor %}
+</ul>
